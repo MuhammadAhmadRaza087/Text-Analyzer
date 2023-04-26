@@ -49,3 +49,34 @@ function isLowerCase(str) {
 function isUpperCase(str) {
     return str == str.toUpperCase() && str != str.toLowerCase();
 }
+//Text To Speech
+let found = false;
+btn_textSpeech.addEventListener("click", () => {
+    const synth = window.speechSynthesis;
+    const text = input_text.value;
+    if (!synth.speaking && text) {
+        const utternace = new SpeechSynthesisUtterance(text);
+        synth.speak(utternace)
+        found = true;
+    }
+    if (text.length > 10) {
+        if (synth.speaking && found) {
+            btn_textSpeech.innerText = "Pause";
+            synth.resume()
+            found = false
+        } else {
+            btn_textSpeech.innerText = "Resume";
+            synth.pause()
+            found = true;
+        }
+    } else {
+        found = false;
+        btn_textSpeech.innerText = "Text To Speech";
+    }
+    setInterval(() => {
+        if (!synth.speaking && !found) {
+            found = true
+            btn_textSpeech.innerText = "Text To SPeech";
+        }
+    });
+})
